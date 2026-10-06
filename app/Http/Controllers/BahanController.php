@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBahanRequest;
+use App\Http\Requests\UpdateBahanRequest;
+use App\Http\Resources\BahanResource;
 use App\Models\Bahan;
-use Illuminate\Http\Request;
+
 
 class BahanController extends Controller
 {
@@ -12,20 +15,20 @@ class BahanController extends Controller
      */
     public function index()
     {
-        return Bahan::all();
+        return BahanResource::collection(Bahan::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreBahanRequest $request)
     {
-        $bahan = Bahan::create($request->all());
+        $bahan = Bahan::create($request->validated());
 
         return response()->json([
             'message' => 'Bahan berhasil ditambahkan',
-            'data' => $bahan
-        ]);
+            'data' => new BahanResource($bahan)
+        ], 201);
     }
 
     /**
@@ -33,20 +36,20 @@ class BahanController extends Controller
      */
     public function show(string $id)
     {
-        return Bahan::findOrFail($id);
+        return new BahanResource(Bahan::findOrFail($id));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBahanRequest $request, string $id)
     {
         $bahan = Bahan::findOrFail($id);
-        $bahan->update($request->all());
+        $bahan->update($request->validated());
 
         return response()->json([
             'message' => 'Bahan berhasil diupdate',
-            'data' => $bahan
+            'data' => new BahanResource($bahan)
         ]);
     }
 
