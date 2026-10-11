@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreOrderRequest;
+use App\Http\Requests\UpdateOrderRequest;
+use App\Http\Resources\OrderResource;
 
 class OrderController extends Controller
 {
@@ -12,20 +14,20 @@ class OrderController extends Controller
      */
     public function index()
     {
-        return Order::all();
+        return OrderResource::collection(Order::all());
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $order = Order::create($request->all());
+        $order = Order::create($request->validated());
 
         return response()->json([
             'message' => 'Order berhasil ditambahkan',
-            'data' => $order
-        ]);
+            'data' => new OrderResource($order)
+        ], 201);
     }
 
     /**
@@ -33,20 +35,20 @@ class OrderController extends Controller
      */
     public function show(string $id)
     {
-        return Order::findOrFail($id);
+        return new OrderResource(Order::findOrFail($id));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateOrderRequest $request, string $id)
     {
         $order = Order::findOrFail($id);
-        $order->update($request->all());
+        $order->update($request->validated());
 
         return response()->json([
             'message' => 'Order berhasil diupdate',
-            'data' => $order
+            'data' => new OrderResource($order)
         ]);
     }
 

@@ -28,7 +28,9 @@ class UpdateOrderRequest extends FormRequest
             'jenis_pesanan' => 'sometimes|required|string|max:255',
             'jumlah_pesanan' => 'sometimes|required|integer|min:1',
             'total_harga' => 'sometimes|required|integer|min:0',
-            'status' => 'sometimes|required|in:proses,selesai'
+            'status' => 'sometimes|required|in:proses,selesai,terlambat',
+            'deadline' => 'sometimes|required|date',
+            'notes' => 'string|max:255'
         ];
     }
 }

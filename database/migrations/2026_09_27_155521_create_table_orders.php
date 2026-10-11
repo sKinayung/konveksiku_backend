@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('jenis_pesanan');
             $table->integer('jumlah_pesanan')->default(0);
             $table->integer('total_harga')->default(0);
-            $table->enum('status', ['proses', 'selesai'])->default('proses');
+            $table->enum('status', ['proses', 'selesai', 'telat'])->default('proses');
             $table->timestamps();
         });
     }

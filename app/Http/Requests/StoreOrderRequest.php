@@ -28,7 +28,9 @@ class StoreOrderRequest extends FormRequest
             'jenis_pesanan' => 'required|string|max:255',
             'jumlah_pesanan' => 'required|integer|min:1',
             'total_harga' => 'required|integer|min:0',
-            'status' => 'in:proses,selesai'
+            'status' => 'in:proses,selesai,terlambat',
+            'deadline' => 'required|date',
+            'notes' => 'string|max:255'
         ];
     }
 }
